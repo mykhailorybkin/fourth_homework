@@ -2,13 +2,12 @@ import re
 
 def generator_numbers(text: str):
     try:
-        some_text = text.split(" ")
-        pattern = r'^\d+\.\d{2}$'
-        for i in some_text:
-            if re.fullmatch(pattern, i):
-                yield float(i)
-            else:
-                continue
+        
+        pattern = r'(?<=\s)\d+\.\d{2}(?=\s)'
+        match = re.findall(pattern, text)
+        for i in match:
+            yield float(i)
+            
     except:
         return 0
     
