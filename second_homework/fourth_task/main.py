@@ -5,18 +5,17 @@ def input_error(func):
             return func(*args, **kwargs)
         except ValueError:
             return "Give me name and phone please."
-
-    return inner
-
-def key_error(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
         except KeyError:
-            return "Dictionary error"
+            return "I don't have such name in my dictionary."
+        except Exception as ex:
+            return f"Unexpected error{ex}"
+        
+
     return inner
+
 
 #general methods
+@input_error
 def parse_input(user_input):
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
@@ -28,21 +27,18 @@ def add_contact(args, contacts):
     contacts[name] = phone
     return "Contact added."
 
-
+@input_error
 def change_contact(args, contacts):
-    try:
-        name, phone = args
-        contacts[name] = phone
-        return "Contact changed"
-    except:
-        return "Not able to update the phone number"
+    name, phone = args
+    contacts[name] = phone
+    return "Contact changed"
 
-@key_error   
+@input_error
 def show_phone(args, contacts):
     name = args[0]
     return contacts[name]
 
-@key_error
+@input_error
 def show_all(contacts):
     return contacts
     
